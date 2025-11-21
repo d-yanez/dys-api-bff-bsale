@@ -1,0 +1,44 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+  # 🔨 Build Docker image
+  - id: "Build image"
+    name: "gcr.io/cloud-builders/docker"
+    args:
+      - build
+      - --platform=linux/amd64
+      - -t
+      - "gcr.io/$PROJECT_ID/dys-api-bff-bsale:$SHORT_SHA"
+      - .
+
+  # 📤 Push Docker image
+  - id: "Push image"
+    name: "gcr.io/cloud-builders/docker"
+    args:
+      - push
+      - "gcr.io/$PROJECT_ID/dys-api-bff-bsale:$SHORT_SHA"
+
+  # 🚀 Deploy to Cloud Run
+  - id: "Deploy to Cloud Run"
+    name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        gcloud run deploy dys-api-bff-bsale \
+          --image gcr.io/$PROJECT_ID/dys-api-bff-bsale:$SHORT_SHA \
+          --region=us-central1 \
+          --platform=managed \
+          --service-account=sa-dys-api-bff-bsale@${PROJECT_ID}.iam.gserviceaccount.com \
+          --allow-unauthenticated \
+          --port=8080 \
+          --timeout=300s \
+          --memory=256Mi \
+          --cpu=0.5 \
+          --concurrency=1 \
+          --min-instances=0 \
+          --max-instances=1 
+
+images:
+  - "gcr.io/$PROJECT_ID/dys-api-bff-bsale:$SHORT_SHA"
