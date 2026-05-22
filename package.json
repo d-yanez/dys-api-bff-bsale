@@ -5,17 +5,23 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/infrastructure/http/server.ts",
     "build": "tsc",
-    "start": "node dist/infrastructure/http/server.js"
+    "start": "node dist/infrastructure/http/server.js",
+    "deps:policy": "node -e \"const p=require('./package.json');const bad=[];for(const sec of ['dependencies','devDependencies','optionalDependencies']){for(const [n,v] of Object.entries(p[sec]||{})){if(v==='latest'||v==='*'){bad.push(sec+':'+n+'@'+v)}}} if(bad.length){console.error('Blocked dependency specs:\\\\n'+bad.join('\\\\n'));process.exit(1)} console.log('deps policy ok')\"",
+    "deps:install:ci": "npm ci --ignore-scripts"
   },
   "dependencies": {
     "axios": "^1.7.0",
     "dotenv": "^16.4.0",
     "express": "^4.19.0",
+    "nodemailer": "^7.0.10",
+    "pdfkit": "^0.17.2",
     "pino": "^9.0.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^22.0.0",
+    "@types/nodemailer": "^7.0.4",
+    "@types/pdfkit": "^0.17.3",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.0"
