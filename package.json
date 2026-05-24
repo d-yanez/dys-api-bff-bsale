@@ -26,5 +26,6 @@
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.0"
-  }
+  },
+  "packageManager": "pnpm@10.24.0"
 }
