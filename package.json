@@ -11,10 +11,10 @@
     "deps:policy:lockfile": "node -e \"const fs=require('fs');const f=fs.existsSync('pnpm-lock.yaml')?'pnpm-lock.yaml':(fs.existsSync('package-lock.json')?'package-lock.json':null); if(!f){console.log('no lockfile found');process.exit(0)} const t=fs.readFileSync(f,'utf8'); const hosts=new Set(); if(f==='package-lock.json'){ for(const m of t.matchAll(/\\\"(?:resolved|tarball)\\\"\\s*:\\s*\\\"https?:\\\\/\\\\/([^\\\\/\\\"\\\\s]+)/g)){ hosts.add(m[1]); } } else { for(const m of t.matchAll(/(?:resolved|tarball):\\s*https?:\\/\\/([^\\/\\s]+)/g)){ hosts.add(m[1]); } } const bad=[...hosts].filter(h=>h!=='registry.npmjs.org'); if(bad.length){console.error('Disallowed lockfile hosts:\\n'+bad.join('\\n'));process.exit(1)} console.log('lockfile host policy ok')\""
   },
   "dependencies": {
-    "axios": "^1.7.0",
+    "axios": "^1.15.2",
     "dotenv": "^16.4.0",
     "express": "^4.19.0",
-    "nodemailer": "^7.0.10",
+    "nodemailer": "^7.0.11",
     "pdfkit": "^0.17.2",
     "pino": "^9.0.0"
   },
@@ -27,5 +27,14 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.0"
   },
-  "packageManager": "pnpm@10.24.0"
+  "packageManager": "pnpm@10.24.0",
+  "pnpm": {
+    "overrides": {
+      "fast-xml-parser": "5.5.6",
+      "path-to-regexp": "0.1.13",
+      "glob": "10.5.0",
+      "minimatch": "3.1.4",
+      "picomatch": "2.3.2"
+    }
+  }
 }
